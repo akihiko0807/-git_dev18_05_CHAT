@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,500;1,300&display=swap" rel="stylesheet">
+  <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.6.1/firebase-ui-auth.css" />
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/style.css">
+  <title>Tech Meetup</title>
+</head>
+
+<body>
+  <header>
+    <h1>Tech Meetup</h1>
+    <h2>...Please wait</h2>
+    <div id="info"></div>
+  </header>
+  <div class="container hidden">
+    <div class="container-up">
+      <div class="flex-box">
+        <div class="flex-column">
+          <!-- 名前 -->
+          <div>
+            <input type="text" id="username" readonly>
+          </div>
+  
+          <div>
+            <!-- テキストエリア -->
+            <textarea name="" id="text" cols="30" rows="10"></textarea>
+          </div>
+  
+          <div>
+            <!-- 送信ボタン -->
+            <button id="send">送信</button>
+          </div>
+        </div>
+        <div id="output"></div>
+        
+      <!-- ビデオ部分 -->
+        <!-- <h1 class="heading">Room example</h1> -->
+        <div class="self-video-wrapper flex-column">
+          <p class="note">
+            サーバー介して通信する？<br>直接やる？<br>
+            <a id="mesh" href="#mesh">直接</a> / <a id="sfu" href="#sfu">鯖希望</a>
+          </p>
+          <div class="room">
+            <div>
+              <video id="js-local-stream"></video>
+              <span id="js-room-mode"></span>:
+              <input type="text" placeholder="Room Name" id="js-room-id">
+              <button id="js-join-trigger">入室</button>
+              <button id="js-leave-trigger">退室</button>
+            </div>
+          </div>
+        </div>
+  
+        
+  
+          <div>
+            <pre class="messages" id="js-messages"></pre>
+            <input type="text" id="js-local-text">
+            <button id="js-send-trigger">Send</button>
+          </div>
+        </div>
+        <!-- <p class="meta" id="js-meta"></p> -->
+      </div>
+      <!-- 保存されたデータが表示される箇所 -->
+    </div>
+    <div class="remote-streams" id="js-remote-streams"></div>
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdn.webrtc.ecl.ntt.com/skyway-latest.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.8.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.8.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/ui/4.6.1/firebase-ui-auth__ja.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/done.js"></script>
+</body>
+</html>
