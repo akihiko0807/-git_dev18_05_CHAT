@@ -161,6 +161,10 @@ h1{
   border-style: dotted;
 }
 
+.chat-open.hidden{
+  display: none;
+}
+
 .container{
   margin: 30px 10px 0 100px;
 }
@@ -190,8 +194,8 @@ h1{
 .messages-nav{
   position: fixed;
   top: 130px;
-  width: 24vw;
-  left: -24vw;
+  width: 30vw;
+  left: -30vw;
   height: 290px;
   background-color: #ffd61a;
   font-size: 16px;

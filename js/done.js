@@ -146,8 +146,7 @@ const Peer = window.Peer;
   joinTrigger.addEventListener('click', () => {
     console.log(user);
     console.log(peer.id);
-    myPeerId = peer.id;
-    
+    $(".chat-open").removeClass('hidden');
     // Note that you need to ensure the peer has connected to signaling server
     // before using methods of peer instance.
     if (!peer.open) {
@@ -166,12 +165,11 @@ const Peer = window.Peer;
     // 他の人が入ってきたpeerJoinイベントで発火するメッセージ
     room.on('peerJoin', peerId => {
       console.log(peerId);
-      messages.textContent += `<<< ${user.displayName} が入室しました >>>\n`;
+      messages.textContent += `<<< ${peerId} が入室しました >>>\n`;
       if(!$(".messages-nav").hasClass(open)) {
         chatOpen();
       }
     });
-
     // Render remote stream for new peer join in the room
     room.on('stream', async stream => {
       const newVideo = document.createElement('video');
@@ -183,10 +181,12 @@ const Peer = window.Peer;
       await newVideo.play().catch(console.error);
     });
 
-    room.on('data', ({ data, peerId }) => {
-      console.log(peerId)
+    room.on('data', ({ data, src }) => {
+      console.log(data);
+      console.log(src);
+      chatOpen();
       // Show a message sent to the room and who sent
-      messages.textContent += `${user.displayName}: ${data}\n`;
+      messages.textContent += `${src}: ${data}\n`;
     });
 
     // for closing room members
@@ -229,6 +229,9 @@ const Peer = window.Peer;
       messages.textContent += `${peer.id}: ${localText.value}\n`;
       localText.value = '';
     }
+    $(".chat-open").on("click", function(){
+      chatOpen();
+    });
 
     // チャット部分のテキストエリアにもエンターキーに関する設定をする
     $("#js-local-text").on("keydown", function (e) {
