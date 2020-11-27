@@ -5,6 +5,8 @@
 
 html {
   font-size: 62.5%;
+  overflow: hidden;
+
 }
 
 body {
@@ -21,6 +23,10 @@ main{
 img{
   width: 100%;
   vertical-align: bottom;
+}
+
+video{
+  height: 100%;
 }
 
 a {
@@ -80,7 +86,7 @@ textarea{
 
 header {
   width: 100%;
-  height: 10vh;
+  height: 130px;
   padding: 0 30px 0;
   display: flex;
   justify-content: space-between;
@@ -112,23 +118,36 @@ h1{
   display: none;
 }
 /* 掲示板投稿部分 */
-#username{
-  border: none;
-  cursor: unset;
+.board-submit-form{
+  width: 205;
+  height: 250px;
+  box-sizing: border-box;
 }
 #js-local-stream{
   width: 200px;
-  height: 200px;
+  height: 100%;
 }
-
 #output{
+  width: 40%;
   height: 250px;
   color: #fafafa;
   background-color: green;
   border: 8px solid #3d1111;
-  width: 25%;
   overflow: scroll;
 }
+.self-video-wrapper{
+  width: 280px;
+}
+#username{
+  border: none;
+  cursor: unset;
+  font-size: 16px;
+  padding: 2px 0 1px 2px;
+}
+.from-name{
+  display: flex;
+}
+
 .output-date{
   font-size: 10px;
   color: rgb(165, 165, 165);
@@ -141,20 +160,47 @@ h1{
   border-bottom: #fafafa;
   border-style: dotted;
 }
-.self-video-wrapper{
-  width: 20%;
-}
 
 .container{
-  margin: 10px 20px 0;
+  margin: 30px 10px 0 100px;
 }
-.container-up{
+/* .container-up{
   height: 45vh;
-}
+} */
 
 #mesh{
   color: red;
 }
 #sfu{
   color: red;
+}
+
+#js-messages{
+  /* overflow-y: scroll; */
+  width: 100%;
+  height: 250px;
+  word-wrap: normal;
+  white-space: pre-wrap ;
+}
+
+#js-remote-streams > video{
+  margin-top: 50px;
+  width: 25%;
+}
+.messages-nav{
+  position: fixed;
+  top: 130px;
+  width: 24vw;
+  left: -24vw;
+  height: 290px;
+  background-color: #ffd61a;
+  font-size: 16px;
+  -webkit-transition: .6s;
+  transition: .6s;
+  z-index: 2;
+  padding: 10px;
+  text-align: center;
+}
+.messages-nav.open {
+  left: 0px;
 }

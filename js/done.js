@@ -30,18 +30,19 @@ let user = firebase.auth().onAuthStateChanged( (user) => {
         showMessage('[Error] Can not send mail', `${user.email}宛に確認メールを送信できませんでした: ${error}`);
       });
   }
-});
 
 function showMessage(title, msg) {
   document.querySelector('h1').innerText    = title;
   document.querySelector('#info').innerHTML = msg;
 }
 
-// 送信ボタンをクリックされたら次の処理をする
+
+// 投稿ボタンをクリックされたら次の処理をするーーーーーーーーーーーーーーーーーーーーー
 $("#send").on("click", function () {
   var now = new Date();
   // データを登録で送る
   newPostRef.push({                   // データを送るのはこの方法のみ！
+    //投稿日時
     date: now.getFullYear() + ',' 
     + (now.getMonth()+1) + '/' 
     + now.getDate() + ','
@@ -56,6 +57,8 @@ $("#send").on("click", function () {
   // 文字を空にする
   $("#text").val(""); //空にする
 });
+
+// テキストエリアでのエンターキーの扱いについて定義ーーーーーーーーーーーーーーーーーーーーー
 
 $("#text").on("keydown", function (e) {
   // エンターキーで送信出来る様にする
@@ -74,7 +77,9 @@ $("#text").on("keydown", function (e) {
     $.noop;
   }
 });
-// 受信処理
+
+// 掲示板の受信処理
+
 newPostRef.on("child_added", function (data) {
   //ここに保存されたデータが全て入ってくる
   // function (data)のdataにfirebaseのデータが入ってくる
@@ -104,6 +109,7 @@ const Peer = window.Peer;
   const localText = document.getElementById('js-local-text');
   const sendTrigger = document.getElementById('js-send-trigger');
   const messages = document.getElementById('js-messages');
+  const closeTrigger = document.getElementById('messages-nav-close')
 
   // sfuモードとmeshモード(サーバーへの負担とかの話)の選択をaタグのハッシュで切り替える関数
   const getRoomModeByHash = () => (location.hash === '#sfu' ? 'sfu' : 'mesh');
@@ -138,6 +144,10 @@ const Peer = window.Peer;
 
   // 入室の設定
   joinTrigger.addEventListener('click', () => {
+    console.log(user);
+    console.log(peer.id);
+    myPeerId = peer.id;
+    
     // Note that you need to ensure the peer has connected to signaling server
     // before using methods of peer instance.
     if (!peer.open) {
@@ -150,11 +160,16 @@ const Peer = window.Peer;
     });
     // 接続が成功するとopenイベントが発火する,onceは複数回実行されても1度しか実行しない関数を返す
     room.once('open', () => {
-      messages.textContent += `=== ${roomId.value}へあなたが入室しました ===\n`;
+      messages.textContent += `<<< ${roomId.value}へあなたが入室しました >>>\n`;
+      chatOpen();
     });
     // 他の人が入ってきたpeerJoinイベントで発火するメッセージ
     room.on('peerJoin', peerId => {
-      messages.textContent += `=== ${peerId} joined ===\n`;
+      console.log(peerId);
+      messages.textContent += `<<< ${user.displayName} が入室しました >>>\n`;
+      if(!$(".messages-nav").hasClass(open)) {
+        chatOpen();
+      }
     });
 
     // Render remote stream for new peer join in the room
@@ -168,11 +183,10 @@ const Peer = window.Peer;
       await newVideo.play().catch(console.error);
     });
 
-    room.on('data', ({ data, displayName }) => {
-      console.log(data);
-      console.log(user.displayName);
+    room.on('data', ({ data, peerId }) => {
+      console.log(peerId)
       // Show a message sent to the room and who sent
-      messages.textContent += `${displayName}: ${data}\n`;
+      messages.textContent += `${user.displayName}: ${data}\n`;
     });
 
     // for closing room members
@@ -190,25 +204,61 @@ const Peer = window.Peer;
     // for closing myself
     room.once('close', () => {
       sendTrigger.removeEventListener('click', onClickSend);
-      messages.textContent += '== You left ===\n';
+      messages.textContent += '<<< You left >>>\n';
+      // 退室押した後にYou leftの表示を見せてからチャット画面をクローズさせる
+      $('.messages-nav').delay(1000).queue(function(){
+        chatClose();
+      });
       Array.from(remoteVideos.children).forEach(remoteVideo => {
         remoteVideo.srcObject.getTracks().forEach(track => track.stop());
         remoteVideo.srcObject = null;
         remoteVideo.remove();
       });
     });
+    
+    // sendボタン、chatcloseボタン、退出ボタンについて
 
     sendTrigger.addEventListener('click', onClickSend);
+    closeTrigger.addEventListener('click', chatClose);
     leaveTrigger.addEventListener('click', () => room.close(), { once: true });
-
+    
+    // chat内のsendボタンについて
     function onClickSend() {
       // Send message to all of the peers in the room via websocket
       room.send(localText.value);
-
       messages.textContent += `${peer.id}: ${localText.value}\n`;
       localText.value = '';
+    }
+
+    // チャット部分のテキストエリアにもエンターキーに関する設定をする
+    $("#js-local-text").on("keydown", function (e) {
+      // エンターキーで送信出来る様にする
+      if(e.keyCode == 13){
+        if(e.shiftKey){
+          // シフトキーと同時に押された時は送信されないようにする
+          $.noop;
+        } else if ($(this).val().replace(/\s+/g, "").length > 0){
+          // 空白や改行は空文字へ変換されてその上で1文字以上の時のみ送信されつつ、
+          // 送信後と同時に行われる改行もなくす。
+          e.preventDefault();
+          $("#js-send-trigger").click();
+          console.log(e);
+        }
+      } else {
+        $.noop;
+      }
+    });
+
+
+    function chatOpen(){
+      $(".messages-nav").addClass('open');
+    }
+    function chatClose(){
+      $(".messages-nav").removeClass('open');
     }
   });
 
   peer.on('error', console.error);
 })();
+
+});

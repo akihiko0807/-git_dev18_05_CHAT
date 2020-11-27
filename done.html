@@ -18,11 +18,11 @@
     <div id="info"></div>
   </header>
   <div class="container hidden">
-    <div class="container-up">
-      <div class="flex-box">
-        <div class="flex-column">
+      <div class="container-up flex-box">
+        <div class="board-submit-form flex-column">
           <!-- 名前 -->
-          <div>
+          <div class="from-name">
+            <p>From:</p>
             <input type="text" id="username" readonly>
           </div>
   
@@ -33,41 +33,38 @@
   
           <div>
             <!-- 送信ボタン -->
-            <button id="send">送信</button>
+            <button id="send">書き込む</button>
           </div>
         </div>
         <div id="output"></div>
         
-      <!-- ビデオ部分 -->
-        <!-- <h1 class="heading">Room example</h1> -->
+        <!-- ビデオ部分 -->
         <div class="self-video-wrapper flex-column">
           <p class="note">
-            サーバー介して通信する？<br>直接やる？<br>
-            <a id="mesh" href="#mesh">直接</a> / <a id="sfu" href="#sfu">鯖希望</a>
+            入室前に通信方式を選択<br>
+            <a id="mesh" href="#mesh">mesh</a> / <a id="sfu" href="#sfu">sfu</a>
+            (now:<span id="js-room-mode"></span>)
           </p>
           <div class="room">
             <div>
-              <video id="js-local-stream"></video>
-              <span id="js-room-mode"></span>:
+              
               <input type="text" placeholder="Room Name" id="js-room-id">
               <button id="js-join-trigger">入室</button>
               <button id="js-leave-trigger">退室</button>
+              <video id="js-local-stream"></video>
             </div>
           </div>
         </div>
-  
-        
-  
-          <div>
-            <pre class="messages" id="js-messages"></pre>
-            <input type="text" id="js-local-text">
-            <button id="js-send-trigger">Send</button>
-          </div>
         </div>
         <!-- <p class="meta" id="js-meta"></p> -->
       </div>
-      <!-- 保存されたデータが表示される箇所 -->
-    </div>
+      <!-- 部屋の中のチャット部分 -->
+      <nav class="messages-nav">
+        <pre class="messages" id="js-messages"></pre>
+        <input type="text" id="js-local-text">
+        <button id="js-send-trigger">Send</button>
+        <button id="messages-nav-close">Chat Close</button>
+      </nav>
     <div class="remote-streams" id="js-remote-streams"></div>
   </div>
 
