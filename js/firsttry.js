@@ -1,7 +1,3 @@
-
-
-//firebaseのデーターベース（保存させる場所）を使いますよと言うjsのコードを貼り付ける
-// xxxxxスクリプトを貼り付ける
 const newPostRef = firebase.database().ref();
 
 document.addEventListener('DOMContentLoaded', function () {
