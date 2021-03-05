@@ -1,6 +1,4 @@
-
-
-// Your web app's Firebase configuration
+// Firebase configuration
 var firebaseConfig = {
   apiKey: "AIzaSyAp9VTqjvz-0U4OOmzL40YuwUi9sXTr3ms",
   authDomain: "dev18-chat-ef1ec.firebaseapp.com",
@@ -13,8 +11,6 @@ var firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-//firebaseのデーターベース（保存させる場所）を使いますよと言うjsのコードを貼り付ける
-// xxxxxスクリプトを貼り付ける
 const newPostRef = firebase.database().ref();
 
 //----------------------------------------------
